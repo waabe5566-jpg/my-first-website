@@ -1,0 +1,1 @@
+<?php require 'includes/header.php';?><h3>Timetable</h3><div class="card p-4"><p class="text-muted">Timetable module is ready for the next configuration step. Classes and subjects are already available.</p></div><?php require 'includes/footer.php';?>

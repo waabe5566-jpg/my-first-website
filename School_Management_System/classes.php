@@ -1,0 +1,7 @@
+<?php require 'includes/header.php';require 'config/db.php';
+if($_SERVER['REQUEST_METHOD']==='POST'){$n=$_POST['class_name'];$s=$_POST['section'];$q=$conn->prepare("INSERT INTO classes(class_name,section) VALUES(?,?)");$q->bind_param('ss',$n,$s);$q->execute();header('Location:classes.php');exit;}
+if(isset($_GET['delete'])){$conn->query("DELETE FROM classes WHERE id=".(int)$_GET['delete']);header('Location:classes.php');exit;}
+$rows=$conn->query("SELECT * FROM classes ORDER BY id DESC");?>
+<div class="d-flex justify-content-between mb-3"><h3>Classes</h3><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add">+ Add Class</button></div>
+<div class="card p-3"><table class="table"><tr><th>Class</th><th>Section</th><th></th></tr><?php while($r=$rows->fetch_assoc()):?><tr><td><?=$r['class_name']?></td><td><?=$r['section']?></td><td><a class="btn btn-sm btn-danger" href="?delete=<?=$r['id']?>">Delete</a></td></tr><?php endwhile;?></table></div>
+<div class="modal fade" id="add"><div class="modal-dialog"><div class="modal-content"><form method="post"><div class="modal-header"><h5>Add Class</h5></div><div class="modal-body"><input class="form-control mb-2" name="class_name" placeholder="Class e.g. Grade 8" required><input class="form-control" name="section" placeholder="Section e.g. A"></div><div class="modal-footer"><button class="btn btn-primary">Save</button></div></form></div></div></div><?php require 'includes/footer.php'; ?>

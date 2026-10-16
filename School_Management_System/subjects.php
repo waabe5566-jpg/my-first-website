@@ -1,0 +1,7 @@
+<?php require 'includes/header.php';require 'config/db.php';
+if($_SERVER['REQUEST_METHOD']==='POST'){$n=$_POST['subject_name'];$c=$_POST['subject_code'];$q=$conn->prepare("INSERT INTO subjects(subject_name,subject_code) VALUES(?,?)");$q->bind_param('ss',$n,$c);$q->execute();header('Location:subjects.php');exit;}
+if(isset($_GET['delete'])){$conn->query("DELETE FROM subjects WHERE id=".(int)$_GET['delete']);header('Location:subjects.php');exit;}
+$rows=$conn->query("SELECT * FROM subjects ORDER BY id DESC");?>
+<div class="d-flex justify-content-between mb-3"><h3>Subjects</h3><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add">+ Add Subject</button></div>
+<div class="card p-3"><table class="table"><tr><th>Subject</th><th>Code</th><th></th></tr><?php while($r=$rows->fetch_assoc()):?><tr><td><?=$r['subject_name']?></td><td><?=$r['subject_code']?></td><td><a class="btn btn-sm btn-danger" href="?delete=<?=$r['id']?>">Delete</a></td></tr><?php endwhile;?></table></div>
+<div class="modal fade" id="add"><div class="modal-dialog"><div class="modal-content"><form method="post"><div class="modal-header"><h5>Add Subject</h5></div><div class="modal-body"><input class="form-control mb-2" name="subject_name" placeholder="Subject name" required><input class="form-control" name="subject_code" placeholder="Code"></div><div class="modal-footer"><button class="btn btn-primary">Save</button></div></form></div></div></div><?php require 'includes/footer.php'; ?>
